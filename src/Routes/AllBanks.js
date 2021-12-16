@@ -1,13 +1,14 @@
-import React from 'react'
-import Banks from '../Components/Banks'
+import React from "react";
+import Banks from "../Components/Banks";
+import Navbar from "../Components/Navbar";
 
 function AllBanks() {
-    return (
-        <div>
-            <h1>All Banks</h1>
-            <Banks />
-        </div>
-    )
+  return (
+    <div>
+      <Navbar />
+      <Banks />
+    </div>
+  );
 }
 
-export default AllBanks
+export default AllBanks;
