@@ -42,8 +42,14 @@ function Banks() {
       .catch((err) => console.log(err));
   }, []);
 
+  const divStyle = {
+    marginLeft: "36px",
+    marginRight: "36px",
+    marginTop: "36px",
+    marginBottom: "36px",
+  };
   return (
-    <div>
+    <div style={divStyle}>
       <MaterialTable
         title={"All Banks"}
         data={bankList}
