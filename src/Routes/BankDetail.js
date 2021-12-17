@@ -1,12 +1,13 @@
-import axios from "axios";
 import React, { useState, useEffect } from "react";
 import MaterialTable from "material-table";
 import { useParams } from "react-router-dom";
-import { City } from "../City";
+import { City, updateCity } from "../City";
+import { getAllBanks } from "../api";
 
 function BankDetails() {
   const [bankList, setBankList] = useState([]);
   const [isLoading, setLoading] = useState(true);
+  const [cityName, setCityName] = useState(`${City}`);
   const { id } = useParams();
 
   const column = [
@@ -32,23 +33,20 @@ function BankDetails() {
   ];
 
   useEffect(() => {
-    axios
-      .get(`https://vast-shore-74260.herokuapp.com/banks?city=${City}`)
-      .then((result) => {
-        var temp = result.data;
+    fetchBanks();
+  }, [cityName]);
 
-        setBankList(temp.filter((dt) => dt.bank_id == id));
+  const fetchBanks = async () => {
+    try {
+      const response = await getAllBanks(cityName);
 
-        setLoading(false);
-      })
-      .catch((err) => console.log(err));
-  }, []);
+      setBankList(response.filter((element) => element.bank_id == id));
+      setLoading(false);
+    } catch (err) {}
+  };
 
   const divStyle = {
-    marginLeft: "36px",
-    marginRight: "36px",
-    marginTop: "36px",
-    marginBottom: "36px",
+    margin: "36px",
   };
   return (
     <div style={divStyle}>

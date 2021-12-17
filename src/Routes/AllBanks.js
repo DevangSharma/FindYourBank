@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useState, useEffect } from "react";
 import MaterialTable from "material-table";
 import { useNavigate } from "react-router-dom";
@@ -7,12 +6,11 @@ import { Select, MenuItem } from "@material-ui/core";
 import { getAllBanks } from "../api";
 import { getLocalStorage, setLocalStorage } from "../helpers";
 import { LOCAL_STORAGE } from "../Constants";
-import Favourites from "./Favourites";
 
 function AllBanks() {
   const [bankList, setBankList] = useState([]);
   const [isLoading, setLoading] = useState(true);
-  const [cityName, setCityName] = useState("MUMBAI");
+  const [cityName, setCityName] = useState(`${City}`);
   const [favourites, setFavourites] = useState([]);
   const [searchColIndex, setSearchColIndex] = useState(0);
 
@@ -115,10 +113,7 @@ function AllBanks() {
   };
 
   const divStyle = {
-    marginLeft: "36px",
-    marginRight: "36px",
-    marginTop: "36px",
-    marginBottom: "36px",
+    margin: "36px",
   };
   return (
     <div style={divStyle}>
