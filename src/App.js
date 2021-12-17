@@ -1,13 +1,24 @@
 import "./App.css";
 import AllBanks from "./Routes/AllBanks";
 import "../node_modules/bootstrap/dist/css/bootstrap.css";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Navbar from "./Components/Navbar";
+import Favourites from "./Routes/Favourites";
 
 function App() {
   return (
-    <div className="App">
-      <AllBanks />
-    </div>
+    <Router>
+      <div className="App">
+        <Navbar />
+
+        <Routes>
+          <Route exact path="/" element={<AllBanks />} />
+          <Route path="/all-banks" element={<AllBanks />} />
+          <Route index element={<AllBanks />} />
+          <Route path="/favourites" element={<Favourites />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 

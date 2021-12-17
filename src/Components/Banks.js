@@ -4,7 +4,7 @@ import MaterialTable from "material-table";
 
 function Banks() {
   const [bankList, setBankList] = useState([]);
-
+  const [isLoading, setLoading] = useState(true);
   const column = [
     {
       title: "Bank Name",
@@ -22,7 +22,7 @@ function Banks() {
     },
 
     {
-      title: "Bank Name",
+      title: "Bank ID",
       field: "bank_id",
     },
 
@@ -38,6 +38,7 @@ function Banks() {
       .then((result) => {
         console.log(result);
         setBankList(result.data);
+        setLoading(false);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -51,6 +52,7 @@ function Banks() {
   return (
     <div style={divStyle}>
       <MaterialTable
+        isLoading={isLoading}
         title={"All Banks"}
         data={bankList}
         columns={column}

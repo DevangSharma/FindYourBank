@@ -5,7 +5,6 @@ import Navbar from "../Components/Navbar";
 function AllBanks() {
   return (
     <div>
-      <Navbar />
       <Banks />
     </div>
   );
