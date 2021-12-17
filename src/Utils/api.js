@@ -1,5 +1,5 @@
 import axios from "axios";
-import { LOCAL_STORAGE } from "./Constants";
+import { LOCAL_STORAGE } from "../Constants";
 import {
   getLocalStorage,
   hasExpired,

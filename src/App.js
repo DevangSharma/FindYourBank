@@ -14,6 +14,7 @@ function App() {
 
         <Routes>
           <Route exact path="/" element={<AllBanks />} />
+          <Route path="*" element={<AllBanks />} />
           <Route path="/all-banks" element={<AllBanks />} />
           <Route path="/bank-details/:id" element={<BankDetails />} />
           <Route index element={<AllBanks />} />

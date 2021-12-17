@@ -1,6 +1,6 @@
 import React from "react";
 import { LOCAL_STORAGE } from "../Constants";
-import { getLocalStorage } from "../helpers";
+import { getLocalStorage } from "../Utils/helpers";
 import MaterialTable from "material-table";
 
 function Favourites() {

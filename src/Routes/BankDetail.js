@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import MaterialTable from "material-table";
 import { useParams } from "react-router-dom";
 import { City, updateCity } from "../City";
-import { getAllBanks } from "../api";
+import { getAllBanks } from "../Utils/api";
 
 function BankDetails() {
   const [bankList, setBankList] = useState([]);
@@ -42,7 +42,9 @@ function BankDetails() {
 
       setBankList(response.filter((element) => element.bank_id == id));
       setLoading(false);
-    } catch (err) {}
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const divStyle = {

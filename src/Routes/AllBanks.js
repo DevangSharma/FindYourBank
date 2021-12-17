@@ -3,8 +3,8 @@ import MaterialTable from "material-table";
 import { useNavigate } from "react-router-dom";
 import { City, updateCity } from "../City";
 import { Select, MenuItem } from "@material-ui/core";
-import { getAllBanks } from "../api";
-import { getLocalStorage, setLocalStorage } from "../helpers";
+import { getAllBanks } from "../Utils/api";
+import { getLocalStorage, setLocalStorage } from "../Utils/helpers";
 import { LOCAL_STORAGE } from "../Constants";
 
 function AllBanks() {
@@ -82,13 +82,15 @@ function AllBanks() {
     getFavourites();
   }, []);
 
-  const addToFavs = (ifsc) => {
-    onSelection([...favourites, ifsc]);
+  const addToFavs = (rowData) => {
+    onSelection([...favourites, rowData]);
   };
 
-  const removeFavs = (ifsc) => {
-    const newVal = favourites.filter((id) => id.ifsc !== ifsc.ifsc);
-    onSelection(newVal);
+  const removeFavs = (rowData) => {
+    const newRowData = favourites.filter(
+      (element) => element.ifsc !== rowData.ifsc
+    );
+    onSelection(newRowData);
   };
   const fetchBanks = async () => {
     try {
@@ -96,7 +98,9 @@ function AllBanks() {
 
       setBankList(response);
       setLoading(false);
-    } catch (err) {}
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const rowClickHander = (e, rowData) => {
@@ -105,7 +109,7 @@ function AllBanks() {
 
   const onSelection = (value) => {
     setFavourites(value);
-    setLocalStorage(LOCAL_STORAGE.FAVOURITES, JSON.stringify(value));
+    setLocalStorage(LOCAL_STORAGE.FAVOURITES, JSON.stringify(value), false);
   };
 
   const getFavourites = () => {

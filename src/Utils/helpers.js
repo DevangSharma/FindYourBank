@@ -1,4 +1,4 @@
-import { MILLISECONDS_PER_DAY } from "./Constants";
+import { MILLISECONDS_PER_DAY } from "../Constants";
 
 export function setLocalStorage(key, value, expirable = true) {
   if (expirable) setLocalStorageTime(key);
