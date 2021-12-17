@@ -21,7 +21,12 @@ function Navbar() {
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav">
             <li className="nav-item">
-              <a className="nav-link" href="favourites">
+              <a className="nav-link" href="/all-banks">
+                Home
+              </a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" href="/favourites">
                 Favourites
               </a>
             </li>
