@@ -2,50 +2,116 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import MaterialTable from "material-table";
 import { useNavigate } from "react-router-dom";
+import { City, updateCity } from "../City";
+import { Select, MenuItem } from "@material-ui/core";
+import { getAllBanks } from "../api";
+import { getLocalStorage, setLocalStorage } from "../helpers";
+import { LOCAL_STORAGE } from "../Constants";
+import Favourites from "./Favourites";
+
 function AllBanks() {
   const [bankList, setBankList] = useState([]);
   const [isLoading, setLoading] = useState(true);
+  const [cityName, setCityName] = useState("MUMBAI");
+  const [favourites, setFavourites] = useState([]);
+  const [searchColIndex, setSearchColIndex] = useState(0);
+
   let navigate = useNavigate();
+
   const column = [
+    {
+      render: (rowData) => {
+        if (favourites.find((tempData) => rowData.ifsc === tempData.ifsc))
+          return (
+            <i
+              onClick={(e) => {
+                e.stopPropagation();
+                removeFavs(rowData);
+              }}
+              class="fas fa-check-circle"
+            ></i>
+          );
+
+        return (
+          <i
+            onClick={(e) => {
+              e.stopPropagation();
+              addToFavs(rowData);
+            }}
+            class="fas fa-plus"
+          ></i>
+        );
+      },
+    },
+
     {
       title: "Bank Name",
       field: "bank_name",
+      searchable: searchColIndex === 0,
     },
 
     {
       title: "IFSC Code",
       field: "ifsc",
+      searchable: searchColIndex === 1,
     },
 
     {
       title: "Branch",
       field: "branch",
+      searchable: searchColIndex === 2,
     },
 
     {
       title: "Bank ID",
       field: "bank_id",
+      searchable: searchColIndex === 3,
     },
 
     {
       title: "Address",
       field: "address",
+      searchable: searchColIndex === 4,
     },
   ];
 
   useEffect(() => {
-    axios
-      .get("https://vast-shore-74260.herokuapp.com/banks?city=MUMBAI")
-      .then((result) => {
-        console.log(result);
-        setBankList(result.data);
-        setLoading(false);
-      })
-      .catch((err) => console.log(err));
+    fetchBanks();
+  }, [cityName]);
+
+  useEffect(() => {
+    getFavourites();
   }, []);
+
+  const addToFavs = (ifsc) => {
+    onSelection([...favourites, ifsc]);
+  };
+
+  const removeFavs = (ifsc) => {
+    const newVal = favourites.filter((id) => id.ifsc !== ifsc.ifsc);
+    onSelection(newVal);
+  };
+  const fetchBanks = async () => {
+    try {
+      const response = await getAllBanks(cityName);
+
+      setBankList(response);
+      setLoading(false);
+    } catch (err) {}
+  };
 
   const rowClickHander = (e, rowData) => {
     navigate(`/bank-details/${rowData.bank_id}`);
+  };
+
+  const onSelection = (value) => {
+    setFavourites(value);
+    setLocalStorage(LOCAL_STORAGE.FAVOURITES, JSON.stringify(value));
+  };
+
+  const getFavourites = () => {
+    const data = getLocalStorage(LOCAL_STORAGE.FAVOURITES) || [];
+    setFavourites(data);
   };
 
   const divStyle = {
@@ -66,6 +132,54 @@ function AllBanks() {
           pageSize: 10,
           pageSizeOptions: [5, 10, 20, 50, 100],
         }}
+        actions={[
+          {
+            icon: () => (
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                style={{ width: 100 }}
+                value={searchColIndex}
+                onChange={(e) => {
+                  const tempIndex = e.target.value;
+                  setSearchColIndex(tempIndex);
+                }}
+              >
+                <MenuItem value={0}>Bank Name</MenuItem>
+                <MenuItem value={1}>IFSC</MenuItem>
+                <MenuItem value={2}>Branch</MenuItem>
+                <MenuItem value={3}>Bank ID</MenuItem>
+                <MenuItem value={4}>Address</MenuItem>
+              </Select>
+            ),
+            tooltip: "Query",
+            isFreeAction: true,
+          },
+          {
+            icon: () => (
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                style={{ width: 100 }}
+                value={cityName}
+                onChange={(e) => {
+                  const city = e.target.value;
+                  updateCity(city);
+                  setLoading(true);
+                  setCityName(city);
+                }}
+              >
+                <MenuItem value="MUMBAI">MUMBAI</MenuItem>
+                <MenuItem value="DELHI">DELHI</MenuItem>
+                <MenuItem value="BANGALORE">BANGALORE</MenuItem>
+                <MenuItem value="BIKANER">BIKANER</MenuItem>
+                <MenuItem value="JAIPUR">JAIPUR</MenuItem>
+              </Select>
+            ),
+            tooltip: "City",
+            isFreeAction: true,
+          },
+        ]}
       />
     </div>
   );

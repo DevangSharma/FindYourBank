@@ -2,10 +2,10 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import MaterialTable from "material-table";
 import { useParams } from "react-router-dom";
+import { City } from "../City";
 
 function BankDetails() {
   const [bankList, setBankList] = useState([]);
-  const [filteredList, setFiltered] = useState(bankList);
   const [isLoading, setLoading] = useState(true);
   const { id } = useParams();
 
@@ -33,7 +33,7 @@ function BankDetails() {
 
   useEffect(() => {
     axios
-      .get("https://vast-shore-74260.herokuapp.com/banks?city=MUMBAI")
+      .get(`https://vast-shore-74260.herokuapp.com/banks?city=${City}`)
       .then((result) => {
         var temp = result.data;
 
