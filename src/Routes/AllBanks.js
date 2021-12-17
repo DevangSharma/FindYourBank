@@ -18,6 +18,7 @@ function AllBanks() {
 
   const column = [
     {
+      title: "favourite",
       render: (rowData) => {
         if (favourites.find((tempData) => rowData.ifsc === tempData.ifsc))
           return (
